@@ -10,8 +10,12 @@
     <packaging>jar</packaging>
 
     <properties>
-        <spark.version>1.4.1</spark.version>
-        <scala.version>2.10.4</scala.version>
+        <spark.version>2.1.0</spark.version>
+        <scala.minor.version>2.10</scala.minor.version>
+        <scala.version>${scala.minor.version}.4</scala.version>
+        <jedis.version>2.7.2</jedis.version>
+        <jdbc.version>9.1-901-1.jdbc4</jdbc.version>
+        <spark.redis.version>0.3.2</spark.redis.version>
     </properties>
 
     <dependencies>
@@ -27,8 +31,8 @@
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_2.10</artifactId>
-            <version>1.4.1</version>
+            <artifactId>spark-core_${scala.minor.version}</artifactId>
+            <version>${spark.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>asm</artifactId>
@@ -38,8 +42,30 @@
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-sql_2.10</artifactId>
-            <version>1.4.1</version>
+            <artifactId>spark-streaming_${scala.minor.version}</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql_${scala.minor.version}</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${jdbc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${jedis.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.redislabs</groupId>
+            <artifactId>spark-redis</artifactId>
+            <version>${spark.redis.version}</version>
         </dependency>
     </dependencies>
     <build>
