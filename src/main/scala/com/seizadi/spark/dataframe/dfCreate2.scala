@@ -1,10 +1,10 @@
 package com.seizadi.spark.dataframe
 
-import org.apache.spark.sql.Row
-import org.apache.spark.sql.types.{StringType, IntegerType, StructField, StructType}
+import org.apache.spark.sql._
+import org.apache.spark.sql.types._
 
 /**
- * Created by sachinparmar on 16/11/15.
+  * Created by seizadi on 3/30/17.
  */
 
 
@@ -12,8 +12,10 @@ object dfCreate2 extends App {
 
   init.logLevel()
 
-  val sc = init.sparkContext
-  val sqlContext = init.sqlContext(sc)
+  val spark = init.sparkSession
+
+  import spark.implicits._
+  import spark.sql
 
   val dataDir = init.resourcePath
 
@@ -39,10 +41,10 @@ object dfCreate2 extends App {
   })
 
   // rdd
-  val rdd = sqlContext.sparkContext.makeRDD(data)
+  val rdd = spark.sparkContext.makeRDD(data)
 
   // data frame
-  val df = sqlContext.createDataFrame(rdd, schema)
+  val df = spark.createDataFrame(rdd, schema)
 
   println("Schema: ")
   df.printSchema()
@@ -50,7 +52,7 @@ object dfCreate2 extends App {
   println("Data: ")
   df.show()
 
-  //utils.showPlans(df)
+  utils.showPlans(df)
 }
 
 

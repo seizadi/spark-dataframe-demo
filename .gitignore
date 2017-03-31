@@ -47,9 +47,7 @@ fabric.properties
 *.class
 *.log
 
-.idea/encodings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/spark-dataframe-demo.iml
+.idea/
 dump.rdb
 target/
+spark-dataframe-demo.iml

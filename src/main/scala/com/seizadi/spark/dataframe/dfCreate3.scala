@@ -1,20 +1,17 @@
 package com.seizadi.spark.dataframe
 
-import org.apache.spark.sql.types.{StringType, IntegerType, StructField, StructType}
-
 /**
   * Created by seizadi on 3/23/17.
   */
 
 object dfCreate3 extends App {
 
-  // api link
-  // http://spark.apache.org/docs/latest/api/scala/#org.apache.spark.sql.DataFrame
-
   init.logLevel()
 
-  val sc = init.sparkContext
-  val sqlContext = init.sqlContext(sc)
+  val spark = init.sparkSession
+
+  import spark.implicits._
+  import spark.sql
 
   val dataDir = init.resourcePath
 
@@ -32,7 +29,7 @@ object dfCreate3 extends App {
   // Class.forName("org.postgresql.Driver")
   // Class.forName("com.mysql.jdbc.Driver")
 
-  val dfAccount = sqlContext.read.jdbc(jdbcUrl, "accounts", connectionProperties)
+  val dfAccount = spark.read.jdbc(jdbcUrl, "accounts", connectionProperties)
 
 
   println("Schema (jsonDF): ")
@@ -67,8 +64,10 @@ object dfCreate3 extends App {
   // sql
   // println("register df as sql....")
 
-  dfAccount.registerTempTable("dfTable")
-  val result = sqlContext.sql("select id, name from dfTable")
+  // DataFrame registerTempTable replaced by
+
+  dfAccount.createTempView("dfTable")
+  val result = sql("select id, name from dfTable")
 
   result.show()
 
@@ -81,30 +80,28 @@ object dfCreate3 extends App {
   }
 
   // udf registration
-  sqlContext.udf.register("evenUDF", even _)
+  spark.udf.register("evenUDF", even _)
 
   // udf with df
   dfAccount.selectExpr("id", "evenUDF(id) as even").show()
 
   // udf with sql
-  dfAccount.registerTempTable("df1Table")
-  val result1 = sqlContext.sql("select id, evenUDF(id) as even from df1Table")
+  dfAccount.createTempView("df1Table")
+  val result1 = sql("select id, evenUDF(id) as even from df1Table")
   result1.show()
 
-  val result2 = sqlContext.sql("show tables")
+  val result2 = sql("show tables")
   result2.show()
 
-  val dfUser = sqlContext.read.jdbc(jdbcUrl, "users", connectionProperties)
+  val dfUser = spark.read.jdbc(jdbcUrl, "users", connectionProperties)
   println("User Data (jsonDF): ")
   dfUser.show()
 
   // val dfUserJoinAccount = dfUser.selectExpr("name as user_name").join(dfAccount, dfAccount("id") === dfUser("account_id"))
-  val dfUserJoinAccount =
+  val df =
     dfUser.selectExpr("id", "name as user_name", "email", "account_id").
       join(dfAccount.
         selectExpr("id", "name as company_name", "company_number", "company_domain"), dfAccount("id") === dfUser("account_id"))
-  val df = dfUserJoinAccount.groupBy("company_name").agg(dfUserJoinAccount("user_name"), dfUserJoinAccount("email"))
   df.show()
-
 
 }

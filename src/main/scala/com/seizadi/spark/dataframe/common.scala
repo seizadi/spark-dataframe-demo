@@ -1,6 +1,7 @@
 package com.seizadi.spark.dataframe
 
 import org.apache.log4j.{Level, Logger}
+import org.apache.spark.sql.SparkSession
 //import org.apache.spark.sql.catalyst.optimizer.{DefaultOptimizer, Optimizer}
 import org.apache.spark.sql.catalyst.plans.logical.LogicalPlan
 import org.apache.spark.sql.catalyst.rules.Rule
@@ -21,20 +22,34 @@ object init {
     Logger.getLogger("akka").setLevel(Level.OFF)
   }
 
+  // Create a SparkSession. No need to create SparkContext
+  // You automatically get it as part of the SparkSession
+  val warehouseLocation = "file:${system:user.dir}/spark-warehouse"
+
+  def sparkSession: SparkSession = SparkSession
+    .builder()
+    .master("local")
+    .appName("sparkSqlDemo")
+    .config("spark.sql.warehouse.dir", warehouseLocation)
+    .getOrCreate()
+
+  // Removed from upgrade to Spark 2.10
+  // https://databricks.com/blog/2016/08/15/how-to-use-sparksession-in-apache-spark-2-0.html
   // spark context
-  def sparkContext: SparkContext = {
-    val sparkConf = new SparkConf().setAppName("demo").setMaster("local[*]")
-    new SparkContext(sparkConf)
-  }
+  // def sparkContext: SparkContext = {
+  //   val sparkConf = new SparkConf().setAppName("demo").setMaster("local[*]")
+  //  new SparkContext(sparkConf)
+  //}
 
-  // spark context w/ Conf
-  def sparkContext(conf: SparkConf) : SparkContext = {
-    conf.setAppName("demo").setMaster("local[*]")
-    new SparkContext(conf)
-  }
+  // Removed from upgrade to Spark 2.10
+  // https://databricks.com/blog/2016/08/15/how-to-use-sparksession-in-apache-spark-2-0.html    // spark context w/ Conf
+  // def sparkContext(conf: SparkConf) : SparkContext = {
+  //  conf.setAppName("demo").setMaster("local[*]")
+  //  new SparkContext(conf)
+  //}
 
-  // FIXME: Broken from upgrade to Spark 2.10
-  // TODO: Move this out to it own Class
+  // Removed from upgrade to Spark 2.10
+  // https://databricks.com/blog/2016/08/15/how-to-use-sparksession-in-apache-spark-2-0.html
   //
   // sql context / custom sql context
   //def sqlContext(sc: SparkContext, co: Optimizer = null) = {
@@ -48,7 +63,6 @@ object init {
 
   // sample data path
   def resourcePath: String = {
-    //"/Users/sachinparmar/my/work/myGit/spark-dataframe-demo/src/main/resources/"
     getClass.getResource("/").getPath
   }
 
