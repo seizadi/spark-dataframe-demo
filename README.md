@@ -1,33 +1,35 @@
+Sample code to work on SparkSQL with data from various sources:
+* synthetic data
+* AWS S3 data
+* RDBMS/JDBC (AWS RDS and Postgres of interest)
+* Redis
+* Cassandra
 
-This repository contains example SCALA/SPARK code and sample data for Spark Dataframe Meetup session.
 
-http://www.meetup.com/Big-Data-Developers-in-Bangalore/events/226419828/
 
 Follow the below steps to clone code and setup your machine.
 
 ## Spark
 
-* Spark 1.4.1
+* Spark 2.1.0
 * Scala 2.10.4
 
 ## Getting code
 
-	git clone https://github.com/parmarsachin/spark-dataframe-demo.git
+	git clone https://github.com/seizadi/spark-dataframe-demo.git
 
 ## Build
 
-        mvn clean install
+    mvn clean install
 
 ## IDE - IntelliJ
 
-You can run all the examples from terminal. If you want to run from the IDE, follow the below steps
+You can run all the examples from terminal. I have been using IntelliJ IDE for the development.
+You can see from the .gitignore file that the artifacts from IDE are not checked in to GitHub.
+You should be able to import this into the IDE as a Maven project.
+### References
 
-* 
-
- Install [scala](https://plugins.jetbrains.com/plugin/?id=1347) plugin. Once plugin is loaded you can load it as [maven
- project](https://www.jetbrains.com/idea/help/importing-project-from-maven-model.html).
-
-## Latest Code
-
-The code may be update before the session, please pull before coming to the session to get the latest code.
-
+It is old but good intro to SparkSQL, some of this code here was structured
+based on this earlier work:
+https://github.com/parmarsachin/spark-dataframe-demo.git
+http://www.meetup.com/Big-Data-Developers-in-Bangalore/events/226419828/
