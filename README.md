@@ -31,5 +31,5 @@ You should be able to import this into the IDE as a Maven project.
 
 It is old but good intro to SparkSQL, some of this code here was structured
 based on this earlier work:
-https://github.com/parmarsachin/spark-dataframe-demo.git
-http://www.meetup.com/Big-Data-Developers-in-Bangalore/events/226419828/
+[https://github.com/parmarsachin/spark-dataframe-demo.git](https://github.com/parmarsachin/spark-dataframe-demo.git)
+[video](http://www.meetup.com/Big-Data-Developers-in-Bangalore/events/226419828/)
